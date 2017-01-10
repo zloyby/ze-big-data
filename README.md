@@ -1,6 +1,6 @@
 # Map-reduce test
 
-Helpful URLs:
+Helpful FAQs:
 [1](https://hadoop.apache.org/docs/r1.2.1/mapred_tutorial.html#Example%3A+WordCount+v1.0)
 [2](https://dtflaneur.wordpress.com/2015/10/02/installing-hadoop-on-mac-osx-el-capitan/)
 
@@ -10,8 +10,9 @@ $ hstart
 ~~~
 
 ### Check hadoop:
-[Resource Manager](http://localhost:50070)
-[JobTracker](http://localhost:8088/)
+Check local URLs of
+[Resource Manager](http://localhost:50070) ,
+[JobTracker](http://localhost:8088/) ,
 [Node Specific Info](http://localhost:8042/)
 
 ~~~ bash
@@ -49,11 +50,11 @@ $ hadoop jar ./target/mapreduce-1.0-SNAPSHOT.jar by.zloy.MapReduceWordCount /dat
 ~~~
 
 ### Check results:
-[File explorer](http://localhost:50070/explorer.html#/user/eugene/output)
+Check local URL of [File explorer](http://localhost:50070/explorer.html#/user/eugene/output)
 
 # Spark test
 
-Helpful URLs:
+Helpful FAQs:
 [1](http://spark.apache.org/docs/latest/quick-start.html)
 
 ### Build jar:
@@ -66,14 +67,14 @@ $ mvn clean package
 $ spark-submit --class "by.zloy.SparkTwoLettersCount" --master "local[4]" ./target/spark-1.0-SNAPSHOT.jar
 ~~~
 
-### See console logs, like
+### See console logs, like:
 ~~~ bash
 Lines with a: 10560, lines with b: 5874
 ~~~
 
 # Storm test
 
-Helpful URLs:
+Helpful FAQs:
 [1](http://www.javahabit.com/2015/12/26/how-to-set-up-apache-storm-on-mac-using-brew/)
 [2](https://habrahabr.ru/post/186208/)
 
@@ -86,7 +87,7 @@ $ /usr/local/opt/storm/libexec/bin/storm ui
 ~~~
 
 ### Check that everything is running smoothly:
-[Storm UI Manager](http://localhost:8772/index.html)
+Check local URL of [Storm UI Manager](http://localhost:8772/index.html)
 
 ~~~ bash
 $ jps
