@@ -1,4 +1,5 @@
 ===================== Map-reduce test =====================
+
 Helpful URLs:
 https://hadoop.apache.org/docs/r1.2.1/mapred_tutorial.html#Example%3A+WordCount+v1.0
 https://dtflaneur.wordpress.com/2015/10/02/installing-hadoop-on-mac-osx-el-capitan/
@@ -23,24 +24,25 @@ $ yarn // For resource management more information than the web interface.
 $ mapred // Detailed information about jobs
 
 3) Build:
-#OLD# $ mkdir ./../target/classes/
-#OLD# $ javac -cp $(hadoop classpath) -d ./../target/classes/ ./../src/main/java/by/zloy/MapReduceWordCount.java
-#OLD# $ jar -cvf ./hadoop-wordcount.jar -C ./../target/classes/ .
+$ mkdir ./../target/classes/
+$ javac -cp $(hadoop classpath) -d ./../target/classes/ ./../src/main/java/by/zloy/MapReduceWordCount.java
+$ jar -cvf ./hadoop-wordcount.jar -C ./../target/classes/ .
 
-cd ./mapreduce
-mvn clean package
+Or by maven:
+$ mvn clean package
 
 4) Run:
-# $ hdfs dfs -mkdir /data
-# $ hdfs dfs -put ./../data/Pride_and_Prejudice.txt /data/Pride_and_Prejudice.txt
-# $ hdfs dfs -cat /data/Pride_and_Prejudice.txt
-# $ hdfs dfs -rm -r /user/eugene/output
+$ hdfs dfs -mkdir /data
+$ hdfs dfs -put ./../data/Pride_and_Prejudice.txt /data/Pride_and_Prejudice.txt
+$ hdfs dfs -cat /data/Pride_and_Prejudice.txt
+$ hdfs dfs -rm -r /user/eugene/output
 $ hadoop jar ./target/mapreduce-1.0-SNAPSHOT.jar by.zloy.MapReduceWordCount /data/Pride_and_Prejudice.txt output
 
 5) Check results:
 File explorer: http://localhost:50070/explorer.html#/user/eugene/output
 
 ===================== Spark test =====================
+
 Helpful URLs:
 http://spark.apache.org/docs/latest/quick-start.html
 
@@ -53,6 +55,7 @@ $ spark-submit --class "by.zloy.SparkTwoLettersCount" --master "local[4]" ./targ
 3) See console logs
 
 ===================== Storm test =====================
+
 Helpful URLs:
 http://www.javahabit.com/2015/12/26/how-to-set-up-apache-storm-on-mac-using-brew/
 https://habrahabr.ru/post/186208/
