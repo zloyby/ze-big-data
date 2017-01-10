@@ -1,0 +1,10 @@
+.classpath
+.project
+.idea
+/out/
+/target/
+*.iml
+*.ipr
+*.iws
+*.log
+.DS_Store
