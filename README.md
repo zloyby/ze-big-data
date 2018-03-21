@@ -1,7 +1,7 @@
 My tests with Spark, Storm and Hadoop MapReduce
 ============
 
-# Map-reduce test
+## Map-reduce test
 
 Helpful FAQs:
 [1](https://hadoop.apache.org/docs/r1.2.1/mapred_tutorial.html#Example%3A+WordCount+v1.0)
