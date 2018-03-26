@@ -7,9 +7,10 @@ Helpful FAQs:
 [1](https://hadoop.apache.org/docs/r1.2.1/mapred_tutorial.html#Example%3A+WordCount+v1.0)
 [2](https://dtflaneur.wordpress.com/2015/10/02/installing-hadoop-on-mac-osx-el-capitan/)
 
-### Start hadoop on macos:
+### Start and stop hadoop on macos:
 ~~~ bash
-$ hstart
+$ /usr/local/Cellar/hadoop/2.7.3/sbin/start-dfs.sh;/usr/local/Cellar/hadoop/2.7.3/sbin/start-yarn.sh
+$ /usr/local/Cellar/hadoop/2.7.3/sbin/stop-yarn.sh;/usr/local/Cellar/hadoop/2.7.3/sbin/stop-dfs.sh
 ~~~
 
 ### Check hadoop:
