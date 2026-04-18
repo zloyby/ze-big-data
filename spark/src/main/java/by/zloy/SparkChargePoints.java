@@ -53,17 +53,24 @@ public class SparkChargePoints {
         String timeFormat = "yyyy-MM-dd HH:mm:ss";
         Column end = unix_timestamp(concat_ws(" ", col("EndDate"), col("EndTime")), timeFormat);
         Column start = unix_timestamp(concat_ws(" ", col("StartDate"), col("StartTime")), timeFormat);
-        Dataset<Row> duration = df.withColumn("duration_hours",
+        Dataset<Row> datasetWithDuration = df.withColumn("duration_hours",
                 end.minus(start).divide(3600.0)
         );
 
-        return duration
+        Dataset<Row> filteredDatasetWithDuration = datasetWithDuration.filter(
+                col("duration_hours").gt(0) // Длительность должна быть больше 0
+                        .and(col("duration_hours").lt(24)) // И, например, меньше суток (отсекаем выбросы)
+                        .and(col("Energy").gt(0)) // Энергия тоже должна быть положительной
+                        .and(col("CPID").isNotNull()) // ID станции обязателен
+        );
+
+        return filteredDatasetWithDuration
                 .groupBy(col("CPID").as("chargepoint_id"))
                 .agg(
                         round(avg("duration_hours"), 2).as("avg_duration"),
                         round(max("duration_hours"), 2).as("max_duration"),
-                        round(avg("energy"), 2).as("avg_energy"),
-                        round(max("energy"), 2).as("max_energy")
+                        round(avg("Energy"), 2).as("avg_energy"),
+                        round(max("Energy"), 2).as("max_energy")
                 );
     }
 
