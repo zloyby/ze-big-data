@@ -1,8 +1,13 @@
 package by.zloy;
 
+import org.apache.spark.sql.Column;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
+import org.apache.spark.sql.types.DataTypes;
+import org.apache.spark.sql.types.Metadata;
+import org.apache.spark.sql.types.StructField;
+import org.apache.spark.sql.types.StructType;
 
 import static org.apache.spark.sql.functions.*;
 
@@ -24,34 +29,49 @@ public class SparkChargePoints {
         load(transform(extract()));
     }
 
+    static StructType getChargePointsSchema() {
+        return new StructType(new StructField[]{
+                new StructField("ChargingEvent", DataTypes.IntegerType, true, Metadata.empty()),
+                new StructField("CPID", DataTypes.StringType, true, Metadata.empty()),
+                new StructField("StartDate", DataTypes.StringType, true, Metadata.empty()),
+                new StructField("StartTime", DataTypes.StringType, true, Metadata.empty()),
+                new StructField("EndDate", DataTypes.StringType, true, Metadata.empty()),
+                new StructField("EndTime", DataTypes.StringType, true, Metadata.empty()),
+                new StructField("Energy", DataTypes.DoubleType, true, Metadata.empty())
+        });
+    }
+
     static Dataset<Row> extract() {
         return spark.read()
                 .option("header", "true")
-                .option("inferSchema", "true")
+                //.option("inferSchema", "true") // if we want to guess all data types
+                .schema(getChargePointsSchema())
                 .csv(INPUT);
     }
 
     static Dataset<Row> transform(Dataset<Row> df) {
         String timeFormat = "yyyy-MM-dd HH:mm:ss";
-        Dataset<Row> withDuration = df.withColumn("duration_hours",
-                unix_timestamp(
-                        concat_ws(" ", col("EndDate"), col("EndTime")), timeFormat
-                ).minus(
-                        unix_timestamp(
-                                concat_ws(" ", col("StartDate"), col("StartTime")), timeFormat
-                        )).divide(3600.0)
+        Column end = unix_timestamp(concat_ws(" ", col("EndDate"), col("EndTime")), timeFormat);
+        Column start = unix_timestamp(concat_ws(" ", col("StartDate"), col("StartTime")), timeFormat);
+        Dataset<Row> duration = df.withColumn("duration_hours",
+                end.minus(start).divide(3600.0)
         );
 
-        return withDuration.groupBy(col("CPID").as("chargepoint_id"))
+        return duration
+                .groupBy(col("CPID").as("chargepoint_id"))
                 .agg(
-                        avg("duration_hours").as("avg_duration"),
-                        max("duration_hours").as("max_duration")
+                        round(avg("duration_hours"), 2).as("avg_duration"),
+                        round(max("duration_hours"), 2).as("max_duration"),
+                        round(avg("energy"), 2).as("avg_energy"),
+                        round(max("energy"), 2).as("max_energy")
                 );
     }
 
     static void load(Dataset<Row> df) {
-        df.write()
+        df.coalesce(1) // want to get only one result file
+                .write()
                 .mode("overwrite")
+                .option("header", "true")
                 .csv(OUTPUT);
     }
 }
