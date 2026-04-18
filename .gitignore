@@ -1,10 +1,11 @@
 .classpath
 .project
 .idea
-/out/
-/target/
+out
+target
 *.iml
 *.ipr
 *.iws
 *.log
 .DS_Store
+/data/output/

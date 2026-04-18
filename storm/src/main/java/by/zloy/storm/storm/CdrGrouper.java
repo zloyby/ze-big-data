@@ -1,11 +1,12 @@
 package by.zloy.storm.storm;
 
 import by.zloy.storm.data.Cdr;
-import java.util.ArrayList;
-import java.util.List;
 import org.apache.storm.generated.GlobalStreamId;
 import org.apache.storm.grouping.CustomStreamGrouping;
 import org.apache.storm.task.WorkerTopologyContext;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CdrGrouper implements CustomStreamGrouping {
     private List<Integer> tasks;
